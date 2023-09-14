@@ -12,7 +12,7 @@ const UserForm = (props) => {
     const [showPassword, setShowPassword] = useState(false);
     const handleSubmit = (e) => {
         e.preventDefault();
-        // onSubmitProp(user); MAKE SURE TO UNCOMMENT LATER
+        onSubmitProp(user);
         setUser({
             email: "",
             password: "",
@@ -49,8 +49,8 @@ const UserForm = (props) => {
                     </div>
                     {
                         type == "register" ?
-                        <Button variant="outlined" type="submit">Sign Up</Button> :
-                        <Button variant="outlined" type="submit">Log In</Button>
+                        <Button variant="outlined" type="submit" style={{color: "white", border: "1px solid white"}}>Sign Up</Button> :
+                        <Button variant="outlined" type="submit" style={{color: "white", border: "1px solid white"}}>Log In</Button>
                     }
             </form>
         </>
