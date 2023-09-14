@@ -1,24 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import LogAndReg from './components/LogAndReg';
+import Navbar from './components/Navbar';
+import Dashboard from './components/Dashboard';
+import InterestCard from './components/InterestCard';
+import InterestList from './components/InterestList';
+import UserCard from './components/UserCard';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>KRNKsite</h1>
-    </>
-  )
+    <Router>
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<LogAndReg />} />
+        <Route path="/TESTROUTE/Dashboard" element={<Dashboard />} />
+        <Route path="/TESTROUTE/InterestCard" element={<InterestCard />} />
+        <Route path="/TESTROUTE/InterestList" element={<InterestList />} />
+        <Route path="/TESTROUTE/EditUser" element={<UserCard />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
