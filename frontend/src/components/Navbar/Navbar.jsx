@@ -28,7 +28,7 @@ const Navbar = (props) => {
             <div className={styles.header}>
                 <div className={styles.info}>
                     <p>Today: {today}</p>
-                    <Button variant='outlined' component={Link} to={"/digest"} style={digestStyle}>Daily Digest</Button>
+                    <Button variant='outlined' component={Link} to={"/dashboard"} style={digestStyle}>Daily Digest</Button>
                 </div>
                 <div className={styles.title}>
                     <h1 style={{fontSize: "2.5rem"}}>KRNKsite</h1>
