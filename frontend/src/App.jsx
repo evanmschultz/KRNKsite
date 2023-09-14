@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import LogAndReg from './components/LogAndReg';
-import Navbar from './components/Navbar';
+import Home from './views/Home';
+// import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import InterestCard from './components/InterestCard';
 import InterestList from './components/InterestList';
@@ -11,10 +11,9 @@ function App() {
 
   return (
     <Router>
-      <Navbar />
-
+      {/* <Navbar /> This should not be on the Home screen, for design's sake */}
       <Routes>
-        <Route path="/" element={<LogAndReg />} />
+        <Route path="/" element={<Home />} />
         <Route path="/TESTROUTE/Dashboard" element={<Dashboard />} />
         <Route path="/TESTROUTE/InterestCard" element={<InterestCard />} />
         <Route path="/TESTROUTE/InterestList" element={<InterestList />} />
