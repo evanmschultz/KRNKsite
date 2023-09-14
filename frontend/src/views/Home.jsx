@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import UserForm from "../components/UserForm/UserForm";
 import Featured from "../components/Featured/Featured";
 import styles from "./Home.module.css";
@@ -58,7 +59,6 @@ const Home = (props) => {
                     <p>Today: {today}</p>
                 </div>
             </div>
-            <hr />
             <div className={styles.content}>
                 <Featured></Featured>
                 <div className={styles.forms}>
