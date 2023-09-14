@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import LogAndReg from './components/LogAndReg';
@@ -9,7 +8,6 @@ import InterestList from './components/InterestList';
 import UserCard from './components/UserCard';
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <Router>
