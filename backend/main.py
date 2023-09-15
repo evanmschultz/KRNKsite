@@ -54,6 +54,6 @@ Base.metadata.create_all(bind=engine)
 from app.routes.users import router as user_router
 
 # Include the routers in the app
-app.include_router(user_router, prefix="/api/v1/users", tags=["users"])
+app.include_router(user_router, prefix="/users", tags=["users"])
 # app.include_router(topic_router)
 # app.include_router(paper_router)
