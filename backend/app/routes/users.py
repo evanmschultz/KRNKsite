@@ -12,7 +12,7 @@ from config.database import get_db
 router = APIRouter()
 
 
-@router.post("/register/", response_model=UserCreateSchema)
+@router.post("/register", response_model=UserCreateSchema)
 def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) -> User:
     """
     Register a new user.

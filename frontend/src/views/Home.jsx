@@ -14,18 +14,19 @@ const Home = (props) => {
 
     const registerUser = async (userParam) => {
         try {
-            const res = await axios.post('http://localhost:8000/api/users/register', userParam, {withCredentials: true});
+            const res = await axios.post('http://localhost:8000/api/v1/users/register/', userParam, {withCredentials: true});
             setRegisterErrors([]);
         } catch(err) {
-            if (err.response.data.message == "User already exists") {
-                setRegisterErrors(["This user already exists!"]);
-            } else{
-                let errorArr = []
-                for (var key in err.response.data.errors) {
-                    errorArr.push(err.response.data.errors[key].message);
-                };
-                setRegisterErrors(errorArr);
-            };
+            // if (err.response.data.message == "User already exists") {
+            //     setRegisterErrors(["This user already exists!"]);
+            // } else{
+            //     let errorArr = []
+            //     for (var key in err.response.data.errors) {
+            //         errorArr.push(err.response.data.errors[key].message);
+            //     };
+            //     setRegisterErrors(errorArr);
+            // };
+            console.log(err)
         };
     };
 
@@ -34,9 +35,9 @@ const Home = (props) => {
             const res = await axios.post('http://localhost:8000/api/users/login', userParam, {withCredentials: true});
             setLoginError("");
         } catch(err) {
-            if (err.response.data.message) {
-                setLoginError("Invalid login attempt!");
-            }
+            // if (err.response.data.message) {
+            //     setLoginError("Invalid login attempt!");
+            // }
         };
     };
 

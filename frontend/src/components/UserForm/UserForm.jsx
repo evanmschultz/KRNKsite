@@ -5,18 +5,22 @@ import { Button, FormControl, Input, InputLabel, InputAdornment} from "@mui/mate
 const UserForm = (props) => {
     const {onSubmitProp, type} = props;
     const [user, setUser] = useState({
+        first_name: "",
+        last_name: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirm_password: ""
     })
     const [showPassword, setShowPassword] = useState(false);
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmitProp(user);
         setUser({
+            first_name: "",
+            last_name: "",
             email: "",
             password: "",
-            confirmPassword: ""
+            confirm_password: ""
         });
     };
 
@@ -24,6 +28,20 @@ const UserForm = (props) => {
         <>
             <form onSubmit={handleSubmit}>
                     <div className={styles.container}>
+                        {
+                            type == "register" ?
+                            <>
+                                <FormControl>
+                                    <InputLabel htmlFor={"first_name" + type} style={{color: 'white', marginTop: "5px"}}>First Name: </InputLabel>
+                                    <Input type="text" className={styles.field} id={"first_name" + type} value={user.first_name} style={{color: 'white'}} onChange={(e) => setUser((prev) => ({...prev, first_name: e.target.value}))}/>
+                                </FormControl>
+                                <FormControl>
+                                    <InputLabel htmlFor={"last_name" + type} style={{color: 'white', marginTop: "5px"}}>Last Name: </InputLabel>
+                                    <Input type="text" className={styles.field} id={"last_name" + type} value={user.last_name} style={{color: 'white'}} onChange={(e) => setUser((prev) => ({...prev, last_name: e.target.value}))}/>
+                                </FormControl>
+                            </>:
+                            ""
+                        }
                         <FormControl>
                             <InputLabel htmlFor={"Email" + type} style={{color: 'white', marginTop: "5px"}}>Email: </InputLabel>
                             <Input type="email" className={styles.field} id={"Email" + type} value={user.email} style={{color: 'white'}} onChange={(e) => setUser((prev) => ({...prev, email: e.target.value}))}/>
@@ -41,8 +59,8 @@ const UserForm = (props) => {
                         {
                             type == "register" ?
                             <FormControl>
-                                <InputLabel htmlFor={"confirmPassword" + type} style={{color: 'white', marginTop: "5px"}}>Confirm Password: </InputLabel>
-                                <Input type={showPassword ? "text" : "password"} className={styles.field} id={"confirmPassword" + type} value={user.confirmPassword} style={{color: 'white'}} onChange={(e) => setUser((prev) => ({...prev, confirmPassword: e.target.value}))}/>
+                                <InputLabel htmlFor={"confirm_password" + type} style={{color: 'white', marginTop: "5px"}}>Confirm Password: </InputLabel>
+                                <Input type={showPassword ? "text" : "password"} className={styles.field} id={"confirm_password" + type} value={user.confirm_password} style={{color: 'white'}} onChange={(e) => setUser((prev) => ({...prev, confirm_password: e.target.value}))}/>
                             </FormControl> :
                             ""
                         }
