@@ -18,7 +18,7 @@ const Home = (props) => {
 	const navigate = useNavigate();
 	const today = new Date().toLocaleDateString();
 
-	// Methods for later registering/logging in, will need to be updated before they can work, especially for error handling
+	// TODO: Add axios request to get random articles for Featured
 
 	const registerUser = async (userParam) => {
 		try {
@@ -40,7 +40,6 @@ const Home = (props) => {
 			if (err.response.data.detail == "Email already registered") {
 			    setErrors((prev) => ({...prev, emailError: "This email is already in the system!"}));
 			} else{
-				console.log(err)
 			    for (const error of err.response.data.detail) {
 			        if (error.msg.includes("Password")) {
 						if (error.msg.includes("8")) {
@@ -110,7 +109,11 @@ const Home = (props) => {
 					</div>
 				</div>
 				<div className={styles.content}>
-					<Featured></Featured>
+					{/* TODO: Add articles prop to featured later */}
+					<div className={styles.featured}>
+						<h1>Featured Articles</h1>
+						<Featured></Featured>
+					</div>
 					<div className={styles.forms}>
 						{newUser && (
 							<div

@@ -35,8 +35,15 @@
 .content {
     display: flex;
     margin: 20px 20px 0px;
-    gap: 40px;
-}   
+    gap: 20px;
+}
+
+.featured {
+    border: 2px solid black;
+    border-radius: 10px;
+    height: fit-content;
+    width: 55vw;
+}
 
 .userform {
     padding: 15px 20px;
