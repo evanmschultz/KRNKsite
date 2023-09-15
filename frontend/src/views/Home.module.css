@@ -47,14 +47,21 @@
     align-items: center;
 }
 
+.userform h1 {
+    color: whitesmoke;
+    text-shadow: 1px 1px 1px black;
+}
+
 #register {
-    background-color: rgba(84, 136, 215, 0.6);
     border: 2px solid black;
+    background: linear-gradient(top, rgba(84, 136, 215, 0.6), rgba(84, 136, 215, 0.6) 65px, transparent 65px, transparent 100%);
+    background: -webkit-linear-gradient(top, rgba(84, 136, 215, 0.6), rgba(84, 136, 215, 0.6) 65px, transparent 65px, transparent 100%);
 }
 
 #login {
-    background-color: rgba(58,94,70,0.6);
     border: 2px solid black;
+    background: linear-gradient(top, rgba(58,94,70,0.6), rgba(58,94,70,0.6) 65px, transparent 65px, transparent 100%);
+    background: -webkit-linear-gradient(top, rgba(58,94,70,0.6), rgba(58,94,70,0.6) 65px, transparent 65px, transparent 100%);
 }
 
 .changeform {

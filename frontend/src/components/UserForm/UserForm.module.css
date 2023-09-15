@@ -6,7 +6,7 @@
 }
 
 .eye {
-    color: white;
+    color: black;
     margin-left: -25px;
     cursor: pointer;
 }
@@ -16,4 +16,17 @@
     border-radius: 5px;
     margin-bottom: 20px;
     padding: 0px 5px;
+}
+
+.error {
+    color: red;
+    margin-top: -10px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    max-width: 100%;    
+}
+
+.error > p {
+    width: 200px;
+    word-wrap: break-word;
 }

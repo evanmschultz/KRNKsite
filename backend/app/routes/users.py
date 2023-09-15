@@ -48,7 +48,7 @@ def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) ->
 def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> User:
     db_user = db.query(User).filter_by(email=user_data.email).first()
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Incorrect email or password.")
 
     if not User.verify_password(user_data.password, db_user.password):
         raise HTTPException(status_code=400, detail="Incorrect email or password.")
