@@ -26,9 +26,12 @@
 
     -   [ ] Include Title, Authors, Published Date, Abstract, and Link
 
+-   [ ] Update Routes to use Annotated and Query instead of the custom created schemas
 -   [ ] Unit tests
 
 ### David
+
+-   [ ] Logout Route
 
 -   [ ] Summary Route
 
