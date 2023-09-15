@@ -4,5 +4,7 @@
 }
 
 .content {
-    padding: 20vh 5vw;
+    margin: 20vh 5vw;
+    border: 2px solid black;
+    border-radius: 10px;
 }
