@@ -13,7 +13,7 @@ from config.database import get_db
 router = APIRouter()
 
 
-@router.post("/register", response_model=UserCreateSchema)
+@router.post("/register", response_model=UserResponseSchema)
 def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) -> User:
     """
     Register a new user.
@@ -43,10 +43,9 @@ def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) ->
     db.refresh(db_user)
     return db_user
 
-@router.post("/login", response_model=UserLoginSchema)
-def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> User:
 
-    
+@router.post("/login", response_model=UserResponseSchema)
+def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> User:
     db_user = db.query(User).filter_by(email=user_data.email).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
