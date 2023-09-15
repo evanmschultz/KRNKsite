@@ -76,7 +76,18 @@ class UserCreateSchema(BasePasswordSchema):
     email: EmailStr
     is_premium_user: bool = Field(default=False)
 
+class UserLoginSchema(BaseModel):
+    """
+    Pydantic model for validating user login data.
 
+    Attributes:
+        email (EmailStr): The email address of the user. Must be a valid email format.
+        password (str): The password for the user.
+    """
+
+    email: EmailStr
+    password: str
+    
 class UserInfoUpdateSchema(BaseModel):
     """
     Pydantic model for validating user information update data.
