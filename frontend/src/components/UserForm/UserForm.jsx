@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from './UserForm.module.css';
 import { Button, FormControl, Input, InputLabel, InputAdornment} from "@mui/material";
+import axios from "axios";
 
 const UserForm = (props) => {
     const {onSubmitProp, type} = props;
@@ -12,17 +13,37 @@ const UserForm = (props) => {
         confirm_password: ""
     })
     const [showPassword, setShowPassword] = useState(false);
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmitProp(user);
-        setUser({
-            first_name: "",
-            last_name: "",
-            email: "",
-            password: "",
-            confirm_password: ""
-        });
+        
+        try {
+            if (type === "register") {
+                // Handle registration form submission
+                await onSubmitProp(user);
+    
+                const response = await axios.post('http://localhost:8000/api/v1/users/register', user);
+                console.log(response);
+    
+                // Reset the user state or perform other actions specific to registration
+                setUser({
+                    first_name: "",
+                    last_name: "",
+                    email: "",
+                    password: "",
+                    confirm_password: ""
+                });
+            } else if (type === "login") {
+                const response = await axios.post('http://localhost:8000/api/v1/users/login', user);
+                console.log(response);
+                // Handle login form submission
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
+    
+    
+
 
     return (
         <>
