@@ -1,6 +1,6 @@
 import React from 'react'
 
-function InterestCard() {
+const InterestCard = (props) => {
     return (
         <div>InterestCard</div>
     )

@@ -3,14 +3,22 @@ import axios from 'axios';
 import UserForm from '../components/UserForm/UserForm';
 import Featured from '../components/Featured/Featured';
 import styles from './Home.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const Home = (props) => {
-	const [registerErrors, setRegisterErrors] = useState([]);
-	const [loginError, setLoginError] = useState('');
+	const [errors, setErrors] = useState({
+		firstNameError: "",
+		lastNameError: "",
+		emailError: "",
+		passwordError: "",
+		confirmError: "",
+		loginError: ""
+	});
 	const [newUser, setNewUser] = useState(true);
+	const navigate = useNavigate();
 	const today = new Date().toLocaleDateString();
 
-	// Methods for later registering/logging in, will need to be updated before they can work, especially for error handling
+	// TODO: Add axios request to get random articles for Featured
 
 	const registerUser = async (userParam) => {
 		try {
@@ -19,20 +27,35 @@ const Home = (props) => {
 				userParam,
 				{ withCredentials: true }
 			);
-			setRegisterErrors([]);
-			console.log(res.data);
+			setErrors({
+				firstNameError: "",
+				lastNameError: "",
+				emailError: "",
+				passwordError: "",
+				confirmError: "",
+				loginError: ""
+			});
+			navigate("/dashboard")
 		} catch (err) {
-			// if (err.response.data.message == "User already exists") {
-			//     setRegisterErrors(["This user already exists!"]);
-			// } else{
-			//     let errorArr = []
-			//     for (var key in err.response.data.errors) {
-			//         errorArr.push(err.response.data.errors[key].message);
-			//     };
-			//     setRegisterErrors(errorArr);
-			// };
-			console.log(err);
-		}
+			if (err.response.data.detail == "Email already registered") {
+			    setErrors((prev) => ({...prev, emailError: "This email is already in the system!"}));
+			} else{
+			    for (const error of err.response.data.detail) {
+			        if (error.msg.includes("Password")) {
+						if (error.msg.includes("8")) {
+							setErrors((prev) => ({...prev, passwordError: "Password must be at least 8 characters long!"}));
+						} else if (error.msg.includes("1")) {
+							setErrors((prev) => ({...prev, passwordError: "Password must contain at least: 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character."}));
+						} else {
+							setErrors((prev) => ({...prev, passwordError: "", confirmError: "Passwords do not match!"}));
+						}
+					}
+					if (error.msg.includes("email")) {
+						setErrors((prev) => ({...prev, emailError: "Invalid email address!"}));
+					}
+			    };
+			};
+		};
 	};
 
 	const loginUser = async (userParam) => {
@@ -42,18 +65,30 @@ const Home = (props) => {
 				userParam,
 				{ withCredentials: true }
 			);
-			setLoginError('');
+			setErrors({
+				firstNameError: "",
+				lastNameError: "",
+				emailError: "",
+				passwordError: "",
+				confirmError: "",
+				loginError: ""
+			});
+			navigate("/dashboard")
 		} catch (err) {
-			// if (err.response.data.message) {
-			//     setLoginError("Invalid login attempt!");
-			// }
+			setErrors((prev) => ({...prev, loginError: "Invalid login attempt!"}));
 		}
 	};
 
 	const toggleForm = () => {
 		setNewUser((prev) => !prev);
-		setRegisterErrors([]);
-		setLoginError('');
+		setErrors({
+			firstNameError: "",
+			lastNameError: "",
+			emailError: "",
+			passwordError: "",
+			confirmError: "",
+			loginError: ""
+		})
 	};
 	return (
 		<>
@@ -74,7 +109,11 @@ const Home = (props) => {
 					</div>
 				</div>
 				<div className={styles.content}>
-					<Featured></Featured>
+					{/* TODO: Add articles prop to featured later */}
+					<div className={styles.featured}>
+						<h1>Featured Articles</h1>
+						<Featured></Featured>
+					</div>
 					<div className={styles.forms}>
 						{newUser && (
 							<div
@@ -85,12 +124,8 @@ const Home = (props) => {
 								<UserForm
 									onSubmitProp={registerUser}
 									type='register'
+									errors={errors}
 								/>
-								<div className={styles.errors}>
-									{registerErrors.map((err, index) => (
-										<p key={index}>{err}</p>
-									))}
-								</div>
 							</div>
 						)}
 						{!newUser && (
@@ -99,10 +134,8 @@ const Home = (props) => {
 								<UserForm
 									onSubmitProp={loginUser}
 									type='login'
+									errors={errors}
 								/>
-								<div className={styles.errors}>
-									<p>{loginError}</p>
-								</div>
 							</div>
 						)}
 						<p className={styles.changeform} onClick={toggleForm}>
