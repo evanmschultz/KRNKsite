@@ -1,9 +1,13 @@
 from fastapi import FastAPI, Request, Response
 from sqlalchemy import create_engine
 from config.database import Base, SessionLocal, engine
+from fastapi.middleware.cors import CORSMiddleware
 
 # Initialize FastAPI App
 app = FastAPI()
+
+# Define the list of allowed origins for CORS
+origins = ["http://localhost:3000"]
 
 from app.models.user import User
 from app.models.topic import Topic
@@ -41,6 +45,14 @@ async def db_session_middleware(request: Request, call_next) -> Response:
         request.state.db.close()
     return response
 
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Import your routers here
 from app.routes.users import router as user_router
