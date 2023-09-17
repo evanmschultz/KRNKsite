@@ -174,3 +174,6 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+# last_run.txt file for managing the auto run functionality before deployment
+last_run.txt
