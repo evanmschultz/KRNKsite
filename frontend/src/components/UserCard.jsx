@@ -1,30 +1,45 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Table, TableBody, TableRow, TableCell, TableContainer } from "@mui/material";
 
-function UserCard() {
-	const [user, setUser] = useState({
-		first_name: '',
-		last_name: '',
-		email: '',
-		password: ''
+const UserCard = (props) => {
+    const {id} = useParams();
+    const [user, setUser] = useState({
+		first_name: "",
+		last_name: "",
+		email: "",
+		topics: [],
+		created_at: new Date().toLocaleDateString()
 	});
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:8000/v1/users/1') //Test case, will need to change to dynamic
-			.then((res) => setUser(res.data))
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
-	}, []);
+    const navigate = useNavigate();
+    useEffect(() => {
+        const fetchUser = async () => {
+            const res = await axios.get('http://localhost:8000/users/' + id);
+            const data = await res.data;
+            setUser(data);
+        }
+        fetchUser().catch((err) => console.log(err));
+		console.log(user)
+    }, []);
 
-	return (
-		<div>
-			UserCard
-			<h1>Test of {user.first_name} </h1>
-			{user.last_name}
-			{user.email}
-		</div>
-	);
-}
+    return (
+        <>
+            <h1>{user.first_name + " " + user.last_name}</h1>
+			<p>Member since: {user.created_at}</p>
+            <TableContainer>
+                <Table>
+                    <TableBody> 
+                        <TableRow>
+                            <TableCell style={{textAlign: "left"}}>Test</TableCell>
+                            <TableCell style={{textAlign: "right"}}>Test</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
+    );
+};
 
 export default UserCard;

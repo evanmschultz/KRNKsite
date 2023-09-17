@@ -17,7 +17,7 @@ const Featured = (props) => {
                 <div className={styles.article}>
                     <img src="../src/assets/test-image.png" alt="article picture" className={styles.articlePicture}/>
                     <h3><Link to={"/article/0"} style={{color: "black"}}>Headline</Link></h3>
-                    <p>Breaking news! This article is a demonstration of a long description that features automatic cutoff when things get too big</p>
+                    <p>Breaking news! This article is a demonstration of a long description that features automatic cutoff when things get too big. Like way, way, way, way, way, way, way, way, way too big.</p>
                 </div>
                 <div className={styles.article}>
                     <img src="../src/assets/test-image.png" alt="article picture" className={styles.articlePicture}/>
