@@ -1,20 +1,17 @@
 from datetime import datetime
 import re
-from pydantic import BaseModel, validator, EmailStr, ValidationError, Field
+from pydantic import BaseModel, validator, EmailStr, Field
 
 
-# TODO: Update password schemas, as the base
 class BasePasswordSchema(BaseModel):
     """
     Pydantic model for validating user passwords.
 
     Attributes:
         password (str): The password for the user.
-        confirm_password (str): Password confirmation for validation.
     """
 
     password: str
-    confirm_password: str
 
     @validator("password")
     def validate_password(cls, password) -> str:
@@ -30,7 +27,7 @@ class BasePasswordSchema(BaseModel):
 
         return password
 
-    @validator("confirm_password")
+    @validator("confirm_password", check_fields=False)
     def confirm_passwords_match(cls, confirm_password, values) -> str:
         if "password" in values and confirm_password != values["password"]:
             raise ValueError("Passwords do not match.")

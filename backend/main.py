@@ -9,12 +9,26 @@ from app.models.user import User
 from app.models.topic import Topic
 from app.models.paper import Paper
 from app.models.summary import Summary
-from app.models.associations import Base
+from app.models.associations import user_topics_association
 from app.schemas.user_schema import UserCreateSchema, UserResponseSchema
+
+
+from fastapi.middleware.cors import CORSMiddleware
 
 # Create the database tables
 Base.metadata.create_all(bind=engine)
 
+origins = [
+    "http://localhost:3000",  # Assuming your frontend is running on this address
+    # Add other origins if needed
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.middleware("http")
 async def db_session_middleware(request: Request, call_next) -> Response:
@@ -44,8 +58,12 @@ async def db_session_middleware(request: Request, call_next) -> Response:
 
 # Import your routers here
 from app.routes.users import router as user_router
+from app.routes.topics import router as topic_router
+from app.routes.papers import router as paper_router
+from app.routes.summaries import router as summary_router
 
 # Include the routers in the app
-app.include_router(user_router, prefix="/api/v1/users", tags=["users"])
-# app.include_router(topic_router)
-# app.include_router(paper_router)
+app.include_router(user_router, prefix="/api", tags=["users"])
+app.include_router(topic_router, prefix="/api", tags=["topics"])
+app.include_router(paper_router, prefix="/api", tags=["papers"])
+app.include_router(summary_router, prefix="/api", tags=["summaries"])

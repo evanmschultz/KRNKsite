@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from datetime import datetime
-from app.models.associations import Base
+from config.database import Base
 
 
 class Paper(Base):

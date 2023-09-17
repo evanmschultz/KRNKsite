@@ -2,8 +2,20 @@ from datetime import datetime
 from sqlalchemy import Boolean, Column, Integer, String, DateTime, Table, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from passlib.hash import bcrypt
-from app.models.associations import Base, user_topics_association
+from passlib.hash import bcrypt as bcrypt
+from config.database import Base
+from .associations import user_topics_association
+
+from pydantic import BaseModel
+
+class UserResponseSchema(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    email: str
+    is_premium_user: bool
+    created_at: datetime
+    updated_at: datetime
 
 
 class User(Base):
@@ -11,7 +23,7 @@ class User(Base):
     The User class is a model for storing user information and includes methods
     for hashing passwords, checking passwords, and other CRUD operations.
     """
-
+    
     __tablename__: str = "users"
 
     id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)  # type: ignore
@@ -25,7 +37,7 @@ class User(Base):
     updated_at: datetime = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)  # type: ignore
 
     # Relationship to Topic
-    topics = relationship("Topic", secondary=user_topics_association)
+    topics = relationship("Topic", secondary=user_topics_association, back_populates="users")
 
     @staticmethod
     def hash_password(password: str) -> str:

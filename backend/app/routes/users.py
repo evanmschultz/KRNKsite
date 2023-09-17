@@ -9,8 +9,15 @@ from app.schemas.user_schema import (
 )
 from config.database import get_db
 
+import logging
+logger = logging.getLogger(__name__)
+
 router = APIRouter()
 
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 @router.post("/register/", response_model=UserCreateSchema)
 def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) -> User:
@@ -27,20 +34,27 @@ def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) ->
     Raises:
         HTTPException: 400 status if email is already registered.
     """
-    if db.query(User).filter_by(email=user_data.email).first():
-        raise HTTPException(status_code=400, detail="Email already registered")
+    try:
+        if db.query(User).filter_by(email=user_data.email).first():
+            logger.error("Email already registered: %s", user_data.email)
+            raise HTTPException(status_code=400, detail="Email already registered")
 
-    hashed_password: str = User.hash_password(user_data.password)
-    db_user = User(
-        first_name=user_data.first_name,
-        last_name=user_data.last_name,
-        email=user_data.email,
-        password=hashed_password,
-    )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+        hashed_password: str = User.hash_password(user_data.password)
+        db_user = User(
+            first_name=user_data.first_name,
+            last_name=user_data.last_name,
+            email=user_data.email,
+            password=hashed_password,
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+
+    except Exception as e:
+        logger.error("Error registering user: %s", str(e))
+        raise
+
 
 
 @router.get("/{user_id}", response_model=UserResponseSchema)
