@@ -14,11 +14,13 @@ const Home = (props) => {
 
     const registerUser = async (userParam) => {
         try {
-            const res = await axios.post('http://localhost:8000/api/users/register', userParam, {withCredentials: true});
+            console.log(userParam);
+            const res = await axios.post('http://127.0.0.1:8000/api/register/', userParam);
             setRegisterErrors([]);
+            console.log(res);
         } catch(err) {
             if (err.response.data.message == "User already exists") {
-                setRegisterErrors(["This user already exists!"]);
+                setRegisterErrors(["This user already exists!"]);5
             } else{
                 let errorArr = []
                 for (var key in err.response.data.errors) {
@@ -31,7 +33,7 @@ const Home = (props) => {
 
     const loginUser = async (userParam) => {
         try {
-            const res = await axios.post('http://localhost:8000/api/users/login', userParam, {withCredentials: true});
+            const res = await axios.post('http://localhost:8000/api/users/login', userParam);
             setLoginError("");
         } catch(err) {
             if (err.response.data.message) {
@@ -45,6 +47,9 @@ const Home = (props) => {
         setRegisterErrors([]);
         setLoginError("");
     }
+
+    
+
     return (
         <>
         <div className={styles.container}>
