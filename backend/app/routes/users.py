@@ -88,7 +88,7 @@ def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> Use
 
 #     return {"message": "Topic added to user's interests"}
 
-@router.get("/{user_id}", response_model=UserResponseSchema)
+@router.get("/user/{user_id}", response_model=UserResponseSchema)
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)) -> User:
     """
     Retrieve a user by ID.
@@ -195,7 +195,7 @@ def update_user_password(
 
     # Verify the current password
     if not User.verify_password(password_data.current_password, db_user.password):
-        raise HTTPException(status_code=400, detail="Incorrect current password")
+        raise HTTPException(status_code=401, detail="Incorrect current password")
 
     # Update the password
     db_user.password = User.hash_password(password_data.password)

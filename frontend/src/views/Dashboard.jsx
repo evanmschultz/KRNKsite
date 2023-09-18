@@ -9,7 +9,7 @@ const Dashboard = () => {
 
     return (
         <>
-            <Navbar userId={0}></Navbar>
+            <Navbar userId={1}></Navbar>
             <div className={styles.content}>
                 <div className={styles.interests}>
                     <h1>Your Interests:</h1>

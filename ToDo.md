@@ -3,11 +3,16 @@
 ## Frontend
 
 ### Kyle
+-   [ ] Set up useContext for user tracking (persist across refresh if time)
+-   [ ] FE styling of received information
+
 
 ### David
 
 -   [ ] JWT Tokens
     -   [ ] These go into the Python bits, David will work on that 9/15.
+-   [ ] Edit paper data
+-   [ ] Axios calls for data with relationships (i.e. get user with topics {interests})
 
 ## Backend
 
@@ -28,13 +33,6 @@
 
 -   [ ] Update Routes to use Annotated and Query instead of the custom created schemas
 -   [ ] Unit tests
+-   [ ] Feed web scraper info into DB
 
 ### David
-
--   [x] Logout Route
-
--   [x] Summary Route
-
-    -   [ ] Connect to Paper
-
--   [x] Routes for Papers

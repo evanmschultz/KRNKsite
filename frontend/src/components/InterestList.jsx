@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 function InterestList() {
-
     const [interests, setInterests] = useState([])
+    const navigate = useNavigate();
     useEffect(() => {
         axios.get('http://localhost:8000/api/topics/')
             .then(res => {
@@ -13,24 +13,22 @@ function InterestList() {
             .catch(err => console.log(err))
     }, [])
 
+    const handleTopicClick = (id) => {
+        navigate('/topic/' + id)
+    }
     // TODO: Add axios request to get user's interests for Featured
 
     return (
         <>
-            <p>List of Interest Buttons</p>
-            <p>These could link to articles about the specific interest??</p>
-            <div>
-                {interests.map((interest, idx) => {
-                    return (
-                        <div key={idx}>
-                            <button onClick={() => handleTopicClick(interest.id)}>
-                                {interest.name}
-                            </button>
-                        </div>
-                    )
-                })}
-            </div>
-
+            {interests.map((interest, idx) => {
+                return (
+                    <div key={idx}>
+                        <button onClick={() => handleTopicClick(interest.id)}>
+                            {interest.name}
+                        </button>
+                    </div>
+                )
+            })}
         </>
     )
 }

@@ -18,50 +18,51 @@ const Home = (props) => {
     const navigate = useNavigate();
     const today = new Date().toLocaleDateString();
 
-    // TODO: Add axios request to get random articles for Featured
+	// TODO: Add axios request to get random articles for Featured
 
-    const registerUser = async (userParam) => {
-        try {
-            const res = await axios.post(
-                'http://localhost:8000/api/register/',
-                userParam,
-                { withCredentials: true }
-            );
-            setErrors({
-                firstNameError: "",
-                lastNameError: "",
-                emailError: "",
-                passwordError: "",
-                confirmError: "",
-                loginError: ""
-            });
-            navigate("/dashboard")
-        } catch (err) {
-            if (err.response.data.detail == "Email already registered") {
-                setErrors((prev) => ({ ...prev, emailError: "This email is already in the system!" }));
-            } else {
-                for (const error of err.response.data.detail) {
-                    if (error.msg.includes("Password")) {
-                        if (error.msg.includes("8")) {
-                            setErrors((prev) => ({ ...prev, passwordError: "Password must be at least 8 characters long!" }));
-                        } else if (error.msg.includes("1")) {
-                            setErrors((prev) => ({ ...prev, passwordError: "Password must contain at least: 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character." }));
-                        } else {
-                            setErrors((prev) => ({ ...prev, passwordError: "", confirmError: "Passwords do not match!" }));
-                        }
-                    }
-                    if (error.msg.includes("email")) {
-                        setErrors((prev) => ({ ...prev, emailError: "Invalid email address!" }));
-                    }
-                };
-            };
-        };
-    };
+	const registerUser = async (userParam) => {
+		try {
+			const res = await axios.post(
+				'http://localhost:8000/api/register/',
+				userParam,
+				{ withCredentials: true }
+			);
+			setErrors({
+				firstNameError: "",
+				lastNameError: "",
+				emailError: "",
+				passwordError: "",
+				confirmError: "",
+				loginError: ""
+			});
+			navigate("/dashboard")
+		} catch (err) {
+            console.log(err)
+			if (err.response.data.detail == "Email already registered") {
+			    setErrors((prev) => ({...prev, emailError: "This email is already in the system!"}));
+			} else{
+			    for (const error of err.response.data.detail) {
+			        if (error.msg.includes("Password")) {
+						if (error.msg.includes("8")) {
+							setErrors((prev) => ({...prev, passwordError: "Password must be at least 8 characters long!"}));
+						} else if (error.msg.includes("1")) {
+							setErrors((prev) => ({...prev, passwordError: "Password must contain at least: 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character."}));
+						} else {
+							setErrors((prev) => ({...prev, passwordError: "", confirmError: "Passwords do not match!"}));
+						}
+					}
+					if (error.msg.includes("email")) {
+						setErrors((prev) => ({...prev, emailError: "Invalid email address!"}));
+					}
+			    };
+			};
+		};
+	};
 
     const loginUser = async (userParam) => {
         try {
             const res = await axios.post(
-                'http://localhost:8000/users/login',
+                'http://localhost:8000/api/login',
                 userParam,
                 { withCredentials: true }
             );

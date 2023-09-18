@@ -19,6 +19,7 @@ const digestStyle = {
 };
 
 const Navbar = (props) => {
+	// TODO: Must pass in the prop wherever necessary
 	const { userId } = props;
 	const today = new Date().toLocaleDateString();
 	const logoutUser = async (e) => {

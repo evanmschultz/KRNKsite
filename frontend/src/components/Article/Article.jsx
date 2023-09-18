@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
 import styles from './Article.module.css';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const Article = (props) => {
     const { id } = useParams();
-
-    // TODO: make axios get request for article information
+    const [paper, setPaper] = useState([]);
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/paper/get/' + id)
+            .then(res => {
+                setPaper(res.data)
+                console.log(res.data)
+            })
+            .catch(err => console.log(err))
+    }, [])
 
     return (
         <>
-            <Navbar></Navbar>
+            <Navbar userId={1}></Navbar>
             <div className={styles.content}>
                 <h1>Title</h1>
                 <hr />
-                <p>A brief summary of the article</p>
+                <p>A summary of the article (abstract)</p>
                 <hr />
-                <p>Start of article or article as a pdf?</p>
+                <Button variant="outlined" component={Link} to={paper.pdf_url} style={{color: "black", border: "1px solid black"}}>To Source</Button>
             </div>
         </>
     )
