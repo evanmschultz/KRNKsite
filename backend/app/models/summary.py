@@ -7,8 +7,8 @@ class Summary(Base):
     __tablename__ = "summaries"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    paper_id = Column(Integer, ForeignKey("papers.id"))
-    short_content = Column(Text)
-    long_content = Column(Text)
+    paper_id = Column(Integer, ForeignKey("papers.id"), index=True)
+    short_summary = Column(Text)
+    long_summary = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

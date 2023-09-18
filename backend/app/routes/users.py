@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user_schema import (
     UserCreateSchema,
+    UserLoginSchema,
     UserInfoUpdateSchema,
     UpdatePasswordSchema,
     UserResponseSchema,
@@ -55,6 +56,18 @@ def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) ->
         logger.error("Error registering user: %s", str(e))
         raise
 
+
+
+@router.post("/login", response_model=UserResponseSchema)
+def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> User:
+    db_user = db.query(User).filter_by(email=user_data.email).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="Incorrect email or password.")
+
+    if not User.verify_password(user_data.password, db_user.password):
+        raise HTTPException(status_code=400, detail="Incorrect email or password.")
+
+    return db_user
 
 
 @router.get("/{user_id}", response_model=UserResponseSchema)

@@ -18,3 +18,5 @@ class Topic(Base):
 
     # Relationship to User
     users = relationship("User", secondary=user_topics_association, back_populates="topics")
+    # Define the relationship to Paper
+    papers = relationship("Paper", back_populates="topic")

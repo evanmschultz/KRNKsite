@@ -1,0 +1,10 @@
+* {
+    margin: 0 auto;
+    padding: 0;
+}
+
+.content {
+    margin: 20vh 5vw;
+    border: 2px solid black;
+    border-radius: 10px;
+}
