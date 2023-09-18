@@ -17,6 +17,9 @@ class UserResponseSchema(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+class UserLogoutSchema(BaseModel):
+    detail: str
+
 
 class User(Base):
     """
