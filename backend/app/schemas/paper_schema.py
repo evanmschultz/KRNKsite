@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class PaperBase(BaseModel):
-    pdf_path: str
+    pdf_url: str
 
 class PaperRead(PaperBase):
     id: int

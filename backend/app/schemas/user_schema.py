@@ -126,3 +126,17 @@ class UserResponseSchema(BaseModel):
     is_premium_user: bool
     created_at: datetime
     updated_at: datetime
+
+class UserLogoutSchema(BaseModel):
+    """
+    Pydantic model for serializing user logout data returned by the API.
+
+    Attributes:
+        message (str): A message indicating that the user has been logged out.
+
+    Examples:
+        >>> user = UserLogoutSchema(message="User has been logged out.")
+    """
+
+    message: str
+    

@@ -1,6 +1,6 @@
 from datetime import datetime
 import re
-from pydantic import BaseModel 
+from pydantic import BaseModel, Field
 
 
 class TopicBase(BaseModel):
@@ -32,7 +32,7 @@ class TopicCreateSchema(BaseModel):
         topic (str): The title of the topic. Must be between 1 and 255 characters.
     """
 
-    topic: str = re.compile(r"^[a-zA-Z0-9_ ]*$") # Field(..., min_length=1, max_length=255)
+    topic: str = Field(pattern=r"^[a-zA-Z0-9_ ]*$")
 
 class TopicResponseSchema(TopicBase):
     """
@@ -50,4 +50,7 @@ class TopicResponseSchema(TopicBase):
                             created_at=datetime.now(), updated_at=datetime.now())
     """
 
-    pass
+    id: int
+    topic: str = Field(..., alias='name')
+    created_at: datetime
+    updated_at: datetime

@@ -15,7 +15,6 @@ from app.routes.users import router as user_router
 from fastapi.middleware.cors import CORSMiddleware
 
 # Create the database tables
-Base.metadata.create_all(bind=engine)
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime
@@ -127,7 +126,10 @@ async def run_scheduled_service_tasks() -> None:
             topics = fetch_topics_from_db(db)
             print(f"""\n{'_'*80}\ninside try block\n{'_'*80}""")
             for topic in topics:
+                
                 await process_papers_for_topic(db, topic)
+                print(f"Papers for topic {topic.name} processed successfully!")
+
         finally:
             db.close()
 

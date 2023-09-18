@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.models.topic import Topic
 from app.schemas.topic_schema import TopicCreateSchema, TopicResponseSchema
 from config.database import get_db
+from typing import List
 
 router = APIRouter()
 
@@ -31,8 +32,23 @@ def create_topic(
     db.refresh(topic)
     return topic
 
+@router.get("/topics/", response_model=List[TopicResponseSchema])
+def get_all_topics(db: Session = Depends(get_db)) -> List[TopicResponseSchema]:
+            
+            """
+            Get all topics. -Read
+    
+            Args:
+                db (Session, optional): The database session. Defaults to `get_db()` dependency.
+    
+            Returns:
+                dict: A dictionary containing the retrieved topic objects.
+            """
+    
+            topics = db.query(Topic).all()
+            return topics
 
-@router.get("/topic/get/{topic_id}/", response_model=TopicResponseSchema)
+@router.get("/topic/{topic_id}/", response_model=TopicResponseSchema)
 def get_topic(topic_id: int, db: Session = Depends(get_db)) -> dict:
 
         """
@@ -55,21 +71,7 @@ def get_topic(topic_id: int, db: Session = Depends(get_db)) -> dict:
         return topic
 
 
-@router.get("/topic/get/all/", response_model=TopicResponseSchema)
-def get_all_topics(db: Session = Depends(get_db)) -> dict:
-            
-            """
-            Get all topics. -Read
-    
-            Args:
-                db (Session, optional): The database session. Defaults to `get_db()` dependency.
-    
-            Returns:
-                dict: A dictionary containing the retrieved topic objects.
-            """
-    
-            topics = db.query(Topic).all()
-            return topics
+
 
 
 @router.put("/topic/update/{topic_id}/", response_model=TopicResponseSchema)
@@ -97,7 +99,7 @@ def update_topic(
         topic = db.query(Topic).filter(Topic.id == topic_id).first()
         if not topic:
             raise HTTPException(status_code=404, detail="Topic not found")
-        topic.topic = topic_data.topic
+        topic.name = topic_data.topic
         db.commit()
         db.refresh(topic)
         return topic
