@@ -19,6 +19,7 @@ const Home = (props) => {
 	const today = new Date().toLocaleDateString();
 
 	// TODO: Add axios request to get random articles for Featured
+	// TODO: create global context for which user is logged in
 
 	const registerUser = async (userParam) => {
 		try {
@@ -41,17 +42,20 @@ const Home = (props) => {
 			    setErrors((prev) => ({...prev, emailError: "This email is already in the system!"}));
 			} else{
 			    for (const error of err.response.data.detail) {
-			        if (error.msg.includes("Password")) {
+					if (error.loc[1] == "first_name") {
+						setErrors((prev) => ({...prev, firstNameError: "Please type your first name!"}));
+					} else if (error.loc[1] == "last_name") {
+						setErrors((prev) => ({...prev, lastNameError: "Please type your last name!"}));
+					} else if (error.loc[1] == "email") {
+						setErrors((prev) => ({...prev, emailError: "Invalid email address!"}));
+					} else if (error.loc[1] == "password") {
 						if (error.msg.includes("8")) {
 							setErrors((prev) => ({...prev, passwordError: "Password must be at least 8 characters long!"}));
-						} else if (error.msg.includes("1")) {
-							setErrors((prev) => ({...prev, passwordError: "Password must contain at least: 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character."}));
 						} else {
-							setErrors((prev) => ({...prev, passwordError: "", confirmError: "Passwords do not match!"}));
+							setErrors((prev) => ({...prev, passwordError: "Password must contain at least: 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character."}));
 						}
-					}
-					if (error.msg.includes("email")) {
-						setErrors((prev) => ({...prev, emailError: "Invalid email address!"}));
+					} else if (error.loc[1] == "confirm_password") {
+						setErrors((prev) => ({...prev, passwordError: "", confirmError: "Passwords do not match!"}));
 					}
 			    };
 			};

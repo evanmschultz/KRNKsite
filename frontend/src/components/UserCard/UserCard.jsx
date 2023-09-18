@@ -1,0 +1,54 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import Navbar from "../Navbar/Navbar";
+import styles from "./UserCard.module.css";
+import { Button, Table, TableBody, TableRow, TableCell, TableContainer } from "@mui/material";
+
+const UserCard = (props) => {
+    const {id} = useParams();
+    const [user, setUser] = useState({
+		first_name: "",
+		last_name: "",
+		email: "",
+		topics: [],
+		created_at: new Date().toDateString()
+	});
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        const fetchUser = async () => {
+            const res = await axios.get('http://localhost:8000/users/' + id);
+            const data = await res.data;
+            data.created_at = new Date(data.created_at).toLocaleDateString()
+            setUser(data);
+        }
+        fetchUser().catch((err) => console.log(err));
+		console.log(user)
+    }, []);
+
+    return (
+        <>
+            <Navbar></Navbar>
+            <div className={styles.content}>
+                <h1>{user.first_name + " " + user.last_name}</h1>
+                <p>Member since: {user.created_at}</p>
+                <form action="">
+                    
+                </form>
+                {/* <TableContainer>
+                    <Table>
+                        <TableBody> 
+                            <TableRow>
+                                <TableCell style={{textAlign: "center"}}>Test</TableCell>
+                                <TableCell style={{textAlign: "center"}}>Test</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer> */}
+            </div>
+        </>
+    );
+};
+
+export default UserCard;

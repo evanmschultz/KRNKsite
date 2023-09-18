@@ -4,7 +4,7 @@ import Home from './views/Home';
 import Dashboard from './views/Dashboard';
 import InterestCard from './components/InterestCard';
 import Article from './components/Article/Article';
-import UserCard from './components/UserCard';
+import UserCard from './components/UserCard/UserCard';
 
 function App() {
 

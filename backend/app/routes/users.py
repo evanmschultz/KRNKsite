@@ -163,7 +163,7 @@ def update_user_password(
 
     # Verify the current password
     if not User.verify_password(password_data.current_password, db_user.password):
-        raise HTTPException(status_code=400, detail="Incorrect current password")
+        raise HTTPException(status_code=401, detail="Incorrect current password")
 
     # Update the password
     db_user.password = User.hash_password(password_data.password)
