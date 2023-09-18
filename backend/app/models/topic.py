@@ -1,7 +1,11 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from app.models.associations import Base
+from config.database import Base
+from app.models.associations import user_topics_association
+
+
+
 
 
 class Topic(Base):
@@ -12,5 +16,7 @@ class Topic(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # Relationship to User
+    users = relationship("User", secondary=user_topics_association, back_populates="topics")
     # Define the relationship to Paper
     papers = relationship("Paper", back_populates="topic")

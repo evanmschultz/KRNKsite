@@ -4,6 +4,7 @@ import os
 from sqlalchemy import create_engine, text, exc
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker
+Base = declarative_base()
 
 
 def create_database_if_not_exists(engine, db_name) -> None:
@@ -22,7 +23,7 @@ def create_database_if_not_exists(engine, db_name) -> None:
 
 # Environment variables for database connection
 DB_USER: str = os.getenv("DB_USER", "root")
-DB_PASSWORD: str = os.getenv("DB_PASSWORD", "rootroot")
+DB_PASSWORD: str = os.getenv("DB_PASSWORD", "root")
 DB_HOST: str = os.getenv("DB_HOST", "localhost")
 DB_NAME: str = "krnksite"
 
@@ -39,7 +40,6 @@ DATABASE_URL: str = (
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base: DeclarativeMeta = declarative_base()
 
 
 def get_db():

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, DateTime, ForeignKey, Text
 from datetime import datetime
-from app.models.associations import Base
+from config.database import Base
 
 
 class Summary(Base):

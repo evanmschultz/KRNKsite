@@ -1,17 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.models.paper import Paper
+from typing import List
 
-from app.schemas.paper_schema import PaperCreateSchema, PaperResponseSchema
+from app.schemas.paper_schema import PaperCreate, PaperRead, PaperUpdate, PaperDelete
 from config.database import get_db
 
 router = APIRouter()
 
 
-@router.post("/paper/create/", response_model=PaperResponseSchema)
+@router.post("/paper/create/", response_model=PaperCreate)
 def create_paper(
 
-    paper_data: PaperCreateSchema, db: Session = Depends(get_db)
+    paper_data: PaperCreate, db: Session = Depends(get_db)
 
 ) -> dict:
 
@@ -33,7 +34,7 @@ def create_paper(
     return paper
 
 
-@router.get("/paper/get/{paper_id}/", response_model=PaperResponseSchema)
+@router.get("/paper/get/{paper_id}/", response_model=PaperRead)
 def get_paper(paper_id: int, db: Session = Depends(get_db)) -> dict:
     
         """
@@ -55,27 +56,23 @@ def get_paper(paper_id: int, db: Session = Depends(get_db)) -> dict:
             raise HTTPException(status_code=404, detail="Paper not found")
         return paper
 
-
-@router.get("/paper/get/all/", response_model=PaperResponseSchema)
-def get_all_papers(db: Session = Depends(get_db)) -> dict:
+@router.get("/papers/", response_model=List[PaperRead])
+def get_all_papers(db: Session = Depends(get_db)) -> List[dict]:
+    """
+    Get all papers. -Read
+    
+    Args:
+        db (Session, optional): The database session. Defaults to `get_db()` dependency.
         
-            """
-            Get all papers. -Read All
-        
-            Args:
-                db (Session, optional): The database session. Defaults to `get_db()` dependency.
-        
-            Returns:
-                dict: A dictionary containing all papers.
-            """
-        
-            papers = db.query(Paper).all()
-            return papers
+        Returns:
+            dict: A dictionary containing the retrieved paper objects."""
+    papers = db.query(Paper).all()
+    return papers
 
 
-@router.put("/paper/update/{paper_id}/", response_model=PaperResponseSchema)
+@router.put("/paper/update/{paper_id}/", response_model=PaperUpdate)
 def update_paper(
-    paper_id: int, paper_data: PaperCreateSchema, db: Session = Depends(get_db)
+    paper_id: int, paper_data: PaperUpdate, db: Session = Depends(get_db)
 ) -> dict:
     
         """
@@ -102,7 +99,7 @@ def update_paper(
         return paper
 
 
-@router.delete("/paper/delete/{paper_id}/", response_model=PaperResponseSchema)
+@router.delete("/paper/delete/{paper_id}/", response_model=PaperDelete)
 def delete_paper(paper_id: int, db: Session = Depends(get_db)) -> dict:
         
             """

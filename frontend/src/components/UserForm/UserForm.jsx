@@ -57,13 +57,13 @@ const UserForm = (props) => {
 									}
 								/>
 							</FormControl>
-								{
-									errors.firstNameError ?
+							{
+								errors.firstNameError ?
 									<div className={styles.error}>
 										<p>{errors.firstNameError}</p>
 									</div> :
 									""
-								}
+							}
 							<FormControl>
 								<InputLabel
 									htmlFor={'last_name' + type}
@@ -85,10 +85,10 @@ const UserForm = (props) => {
 								/>
 								{
 									errors.lastNameError ?
-									<div className={styles.error}>
-										<p>{errors.lastNameError}</p>
-									</div> :
-									""
+										<div className={styles.error}>
+											<p>{errors.lastNameError}</p>
+										</div> :
+										""
 								}
 							</FormControl>
 						</>
@@ -117,10 +117,10 @@ const UserForm = (props) => {
 					</FormControl>
 					{
 						(type == 'register' && errors.emailError) ?
-						<div className={styles.error}>
-							<p>{errors.emailError}</p>
-						</div> :
-						""
+							<div className={styles.error}>
+								<p>{errors.emailError}</p>
+							</div> :
+							""
 					}
 					<FormControl>
 						<InputLabel
@@ -162,10 +162,10 @@ const UserForm = (props) => {
 					</FormControl>
 					{
 						(type == 'register' && errors.passwordError) ?
-						<div className={styles.error}>
-							<p>{errors.passwordError}</p>
-						</div> :
-						""
+							<div className={styles.error}>
+								<p>{errors.passwordError}</p>
+							</div> :
+							""
 					}
 					{type == 'register' ? (
 						<>
@@ -191,11 +191,11 @@ const UserForm = (props) => {
 							</FormControl>
 							{
 								errors.confirmError ?
-								<div className={styles.error}>
-									<p>{errors.confirmError}</p>
-									<br />
-								</div> :
-								""
+									<div className={styles.error}>
+										<p>{errors.confirmError}</p>
+										<br />
+									</div> :
+									""
 							}
 						</>
 					) : (
@@ -214,17 +214,17 @@ const UserForm = (props) => {
 					<>
 						{
 							errors.loginError ?
-							<div className={styles.error}>
-								<p>{errors.loginError}</p>
-								<br />
-							</div> :
-							""
+								<div className={styles.error}>
+									<p>{errors.loginError}</p>
+									<br />
+								</div> :
+								""
 						}
 						<Button
 							variant='outlined'
 							type='submit'
 							style={{ color: "whitesmoke", backgroundColor: "rgba(58,94,70,0.6)", border: '1px solid black' }}
-							>
+						>
 							Log In
 						</Button>
 					</>

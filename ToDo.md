@@ -31,10 +31,10 @@
 
 ### David
 
--   [ ] Logout Route
+-   [x] Logout Route
 
--   [ ] Summary Route
+-   [x] Summary Route
 
     -   [ ] Connect to Paper
 
--   [ ] Routes for Papers
+-   [x] Routes for Papers
