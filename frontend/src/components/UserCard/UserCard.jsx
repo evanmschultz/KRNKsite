@@ -18,7 +18,7 @@ const UserCard = (props) => {
     const navigate = useNavigate();
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axios.get('http://localhost:8000/users/' + id);
+            const res = await axios.get('http://localhost:8000/api/user/' + id);
             const data = await res.data;
             data.created_at = new Date(data.created_at).toLocaleDateString()
             setUser(data);
@@ -33,9 +33,6 @@ const UserCard = (props) => {
             <div className={styles.content}>
                 <h1>{user.first_name + " " + user.last_name}</h1>
                 <p>Member since: {user.created_at}</p>
-                <form action="">
-                    
-                </form>
                 {/* <TableContainer>
                     <Table>
                         <TableBody> 

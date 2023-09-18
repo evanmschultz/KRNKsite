@@ -5,6 +5,7 @@ import Dashboard from './views/Dashboard';
 import InterestCard from './components/InterestCard';
 import Article from './components/Article/Article';
 import UserCard from './components/UserCard/UserCard';
+import Topic from './components/Topic/Topic';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/interests" element={<InterestCard />} />
+        <Route path="/topic/:id" element={<Topic />} />
         <Route path="/article/:id" element={<Article />} />
         <Route path="/edit/:id" element={<UserCard />} />
       </Routes>

@@ -88,7 +88,7 @@ def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> Use
 
 #     return {"message": "Topic added to user's interests"}
 
-@router.get("/{user_id}", response_model=UserResponseSchema)
+@router.get("/user/{user_id}", response_model=UserResponseSchema)
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)) -> User:
     """
     Retrieve a user by ID.

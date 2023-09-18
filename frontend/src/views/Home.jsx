@@ -23,7 +23,7 @@ const Home = (props) => {
 	const registerUser = async (userParam) => {
 		try {
 			const res = await axios.post(
-				'http://localhost:8000/users/register/',
+				'http://localhost:8000/api/register/',
 				userParam,
 				{ withCredentials: true }
 			);
@@ -37,6 +37,7 @@ const Home = (props) => {
 			});
 			navigate("/dashboard")
 		} catch (err) {
+            console.log(err)
 			if (err.response.data.detail == "Email already registered") {
 			    setErrors((prev) => ({...prev, emailError: "This email is already in the system!"}));
 			} else{
@@ -61,7 +62,7 @@ const Home = (props) => {
     const loginUser = async (userParam) => {
         try {
             const res = await axios.post(
-                'http://localhost:8000/users/login',
+                'http://localhost:8000/api/login',
                 userParam,
                 { withCredentials: true }
             );
