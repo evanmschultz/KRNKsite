@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function InterestList() {
 
@@ -13,12 +13,13 @@ function InterestList() {
             .catch(err => console.log(err))
     }, [])
 
+    const handleTopicClick = (id) => {
+        console.log(id)
+    }
     // TODO: Add axios request to get user's interests for Featured
 
     return (
         <>
-            <p>List of Interest Buttons</p>
-            <p>These could link to articles about the specific interest??</p>
             <div>
                 {interests.map((interest, idx) => {
                     return (
