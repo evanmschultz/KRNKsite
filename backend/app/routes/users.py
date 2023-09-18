@@ -7,13 +7,24 @@ from app.schemas.user_schema import (
     UserInfoUpdateSchema,
     UpdatePasswordSchema,
     UserResponseSchema,
+    UserLogoutSchema
 )
+from app.models.topic import Topic
+from app.schemas.topic_schema import TopicResponseSchema
+
 from config.database import get_db
+
+import logging
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
 
-@router.post("/register", response_model=UserResponseSchema)
+import logging
+
+logger = logging.getLogger(__name__)
+
+@router.post("/register/", response_model=UserCreateSchema)
 def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) -> User:
     """
     Register a new user.
@@ -28,20 +39,27 @@ def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) ->
     Raises:
         HTTPException: 400 status if email is already registered.
     """
-    if db.query(User).filter_by(email=user_data.email).first():
-        raise HTTPException(status_code=400, detail="Email already registered")
+    try:
+        if db.query(User).filter_by(email=user_data.email).first():
+            logger.error("Email already registered: %s", user_data.email)
+            raise HTTPException(status_code=400, detail="Email already registered")
 
-    hashed_password: str = User.hash_password(user_data.password)
-    db_user = User(
-        first_name=user_data.first_name,
-        last_name=user_data.last_name,
-        email=user_data.email,
-        password=hashed_password,
-    )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+        hashed_password: str = User.hash_password(user_data.password)
+        db_user = User(
+            first_name=user_data.first_name,
+            last_name=user_data.last_name,
+            email=user_data.email,
+            password=hashed_password,
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+
+    except Exception as e:
+        logger.error("Error registering user: %s", str(e))
+        raise
+
 
 
 @router.post("/login", response_model=UserResponseSchema)
@@ -55,6 +73,20 @@ def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> Use
 
     return db_user
 
+# @router.post("/user/add-topic/{topic_id}/") <--- This needs to be updated once authentication is implemented.
+# def add_topic_to_user(
+#     topic_id: int,
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_user),  # Use your authentication method
+# ):
+#     topic = db.query(Topic).filter(Topic.id == topic_id).first()
+#     if not topic:
+#         raise HTTPException(status_code=404, detail="Topic not found")
+
+#     current_user.topics.append(topic)
+#     db.commit()
+
+#     return {"message": "Topic added to user's interests"}
 
 @router.get("/{user_id}", response_model=UserResponseSchema)
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)) -> User:
@@ -197,3 +229,30 @@ def delete_user(user_id: int, db: Session = Depends(get_db)) -> dict[str, str]:
     db.commit()
 
     return {f"detail": f"User {user_id} was deleted successfully!"}
+
+@router.post("/logout", response_model=UserLogoutSchema)
+def logout_user(db: Session = Depends(get_db)):
+    """
+    Logout the currently authenticated user.
+
+    Args:
+        db (Session, optional): The database session. Defaults to `get_db()` dependency.
+
+    Returns:
+        dict: A dictionary containing a "detail" key with a message indicating the user was logged out.
+
+    Raises:
+        HTTPException: 404 status if user is not found or other errors.
+    """
+    # Assuming you have a method to get the current authenticated user's ID
+    user_id = get_current_user_id()
+
+    db_user: User | None = db.query(User).filter_by(id=user_id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Handle your logout logic here. E.g., invalidate a token, clear a session, etc.
+
+    db.commit()
+
+    return {"detail": f"User {user_id} was logged out successfully!"}

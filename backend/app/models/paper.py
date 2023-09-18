@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Date, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from app.models.associations import Base
+from config.database import Base
 
 
 class Paper(Base):

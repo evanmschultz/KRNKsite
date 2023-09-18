@@ -7,10 +7,14 @@ from app.models.user import User
 from app.models.topic import Topic
 from app.models.paper import Paper
 from app.models.summary import Summary
-from app.models.associations import Base
+from app.models.associations import user_topics_association
 from app.schemas.user_schema import UserCreateSchema, UserResponseSchema
 from app.routes.users import router as user_router
 
+
+from fastapi.middleware.cors import CORSMiddleware
+
+# Create the database tables
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime
@@ -21,7 +25,6 @@ app = FastAPI()
 
 # Initialize Scheduler
 scheduler = AsyncIOScheduler()
-
 
 @app.on_event("startup")
 async def start_scheduler():
@@ -60,6 +63,19 @@ async def db_session_middleware(request: Request, call_next) -> Response:
     return response
 
 
+# Import your routers here
+from app.routes.users import router as user_router
+from app.routes.topics import router as topic_router
+from app.routes.papers import router as paper_router
+from app.routes.summaries import router as summary_router
+
+# Include the routers in the app
+app.include_router(user_router, prefix="/api", tags=["users"])
+app.include_router(topic_router, prefix="/api", tags=["topics"])
+app.include_router(paper_router, prefix="/api", tags=["papers"])
+app.include_router(summary_router, prefix="/api", tags=["summaries"])
+
+
 # CORS Middleware settings
 origins = [
     "http://localhost:3000",  # The origin where your frontend runs
@@ -74,12 +90,6 @@ app.add_middleware(
 
 Base.metadata.create_all(bind=engine)  # Create the database tables
 
-
-# App Routers
-# TODO: Add routers for Topic, Paper, and Summary
-app.include_router(user_router, prefix="/users", tags=["users"])
-# app.include_router(topic_router)
-# app.include_router(paper_router)
 
 
 def should_run_task() -> bool:
@@ -116,7 +126,10 @@ async def run_scheduled_service_tasks() -> None:
             topics = fetch_topics_from_db(db)
             print(f"""\n{'_'*80}\ninside try block\n{'_'*80}""")
             for topic in topics:
+                
                 await process_papers_for_topic(db, topic)
+                print(f"Papers for topic {topic.name} processed successfully!")
+
         finally:
             db.close()
 
