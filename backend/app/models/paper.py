@@ -12,6 +12,7 @@ class Paper(Base):
     title = Column(String(255), index=True)
     authors = Column(Text)
     topic_id = Column(Integer, ForeignKey("topics.id"), nullable=False)
+    summary = Column(Text)
     publication_date = Column(Date)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

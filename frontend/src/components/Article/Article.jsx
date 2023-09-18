@@ -1,34 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Navbar from '../Navbar/Navbar';
 import styles from './Article.module.css';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 
 const Article = (props) => {
     const { id } = useParams();
-    const [paper, setPaper] = useState([]);
+    const [paper, setPaper] = useState({});
+    const [summary, setSummary] = useState({});
+
     useEffect(() => {
-        axios.get('http://localhost:8000/api/paper/get/' + id)
+        // Fetch the paper data
+        axios.get(`http://localhost:8000/api/paper/get/${id}`)
             .then(res => {
-                setPaper(res.data)
-                console.log(res.data)
+                setPaper(res.data);
+                // Assuming the paper object contains a "summary_id" field to link to the summary
+                const summaryId = res.data.summary_id;
+
+                // Fetch the summary data using the summary_id from the paper
+                axios.get(`http://localhost:8000/api/summary/get/${summaryId}`)
+                    .then(summaryRes => {
+                        setSummary(summaryRes.data);
+                    })
+                    .catch(err => console.log(err));
             })
-            .catch(err => console.log(err))
-    }, [])
+            .catch(err => console.log(err));
+    }, [id]); // Include "id" as a dependency to re-fetch data when the ID changes
 
     return (
         <>
-            <Navbar userId={1}></Navbar>
             <div className={styles.content}>
-                <h1>Title</h1>
+                <h1>{paper.title}</h1>
                 <hr />
-                <p>A summary of the article (abstract)</p>
+                <p>{paper.summary}</p>
                 <hr />
-                <Button variant="outlined" component={Link} to={paper.pdf_url} style={{color: "black", border: "1px solid black"}}>To Source</Button>
+                <Button variant="outlined" component={Link} to={paper.pdf_url} style={{ color: "black", border: "1px solid black" }}>To Source</Button>
             </div>
         </>
-    )
+    );
 }
 
-export default Article
+export default Article;

@@ -1,73 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Featured.module.css"
 import axios from "axios";
 
+function shuffleArray(array) {
+    let shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+}
+
 const Featured = (props) => {
-    // const { articles } = props;
-    // Set up Featured to take in props determined by axios get request so it can be reused on the dashboard and the home page
+    const [articles, setArticles] = useState([]);
+    const [shuffledArticles, setShuffledArticles] = useState([]);
 
-    // const [articles, setArticles] = useState([]);
+    useEffect(() => {
+        // Fetch articles when the component mounts
+        axios.get("http://127.0.0.1:8000/api/papers/")
+            .then(res => {
+                setArticles(res.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    console.log(err.response.data);
+                } else {
+                    console.log('Error', err.message);
+                }
+                console.error(err);
+            });
+    }, []);
 
-    // const getArticles = () => {
-    //     axios.get("http://127.0.0.1:8000/api/papers/") <- The SQL database was filled with a sample cell, and it was working. Key takeaways: the DateTime needed to be filled to avoid the 411 error.
-    //         .then(res => {
-    //             setArticles(res.data);
-    //         })
-    //         .catch(err => {
-    //             if (err.response) {
-    //                 console.log(err.response.data);
-    //             } else {
-    //                 console.log('Error', err.message);
-    //             }
-    //             console.error(err);
-    //         });
-    // }
-
+    useEffect(() => {
+        // Shuffle the articles array when it changes
+        const shuffled = shuffleArray(articles);
+        // Slice the first 5 articles from the shuffled array
+        const randomFive = shuffled.slice(0, 5);
+        setShuffledArticles(randomFive);
+    }, [articles]);
 
     return (
         <>
-            {/* <h1> Test of Get of DB info.</h1>
-            <button onClick={getArticles}>Get Articles</button>
-
-            {articles.map((article, idx) => {  
-                return (
-                    <div key={idx}>
-                        <h1>{article.id}</h1>
-
-                    </div>
-                )
-            })} */}
-
-            <div className={styles.container}>
-                <div className={styles.article}>
-                    <img src="../src/assets/test-image.png" alt="article picture" className={styles.articlePicture}/>
-                    <h3><Link to={"/article/0"} style={{color: "black"}}>Headline</Link></h3>
-                    <p>Brief Description</p>
+            {shuffledArticles.map((article, idx) => (
+                <div className={styles.container} key={idx}>
+                    <div className={styles.article}>{article.title}</div>
+                    <Link to={`/article/${article.id}`} style={{ color: "black" }}>
+                        Go to Article
+                    </Link>
                 </div>
-                <div className={styles.article}>
-                    <img src="../src/assets/test-image.png" alt="article picture" className={styles.articlePicture}/>
-                    <h3><Link to={"/article/0"} style={{color: "black"}}>Headline</Link></h3>
-                    <p>Breaking news! This article is a demonstration of a long description that features automatic cutoff when things get too big</p>
-                </div>
-                <div className={styles.article}>
-                    <img src="../src/assets/test-image.png" alt="article picture" className={styles.articlePicture}/>
-                    <h3><Link to={"/article/0"} style={{color: "black"}}>Headline</Link></h3>
-                    <p>Brief Description</p>
-                </div>
-                <div className={styles.article}>
-                    <img src="../src/assets/test-image.png" alt="article picture" className={styles.articlePicture}/>
-                    <h3><Link to={"/article/0"} style={{color: "black"}}>Headline</Link></h3>
-                    <p>Breaking news! This article is a demonstration of a medium description</p>
-                </div>
-                <div className={styles.article}>
-                    <img src="../src/assets/test-image.png" alt="article picture" className={styles.articlePicture}/>
-                    <h3><Link to={"/article/0"} style={{color: "black"}}>Headline</Link></h3>
-                    <p>Brief Description</p>
-                </div>
-            </div>
+            ))}
         </>
     )
 }
 
-export default Featured
+export default Featured;
