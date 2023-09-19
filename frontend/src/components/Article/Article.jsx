@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Navbar from '../Navbar/Navbar';
 import styles from './Article.module.css';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -29,12 +30,13 @@ const Article = (props) => {
 
     return (
         <>
+            <Navbar></Navbar>
             <div className={styles.content}>
-                <h1>{paper.title}</h1>
+                <h1 className={styles.title}>{paper.title}</h1>
                 <hr />
-                <p>{paper.summary}</p>
+                <p className={styles.summary}>{paper.summary}</p>
                 <hr />
-                <Button variant="outlined" component={Link} to={paper.pdf_url} style={{ color: "black", border: "1px solid black" }}>To Source</Button>
+                <Button variant="outlined" component={Link} to={paper.pdf_url} style={{ color: "black", border: "1px solid black", margin: "20px 0px" }}>To Source</Button>
             </div>
         </>
     );

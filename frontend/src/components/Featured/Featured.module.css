@@ -26,11 +26,7 @@
 }
 
 .article > h3 {
-    flex: 3;
-}
-
-.article > p {
-    flex: 7;
+    flex: 6 ;
     text-align: left;
     display: -webkit-box;
     -webkit-line-clamp: 2;
