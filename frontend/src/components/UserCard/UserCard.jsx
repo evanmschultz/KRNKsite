@@ -8,6 +8,7 @@ import { Button, Table, TableBody, TableRow, TableCell, TableContainer } from "@
 const UserCard = (props) => {
     const {id} = useParams();
     const [user, setUser] = useState({
+        id: id,
 		first_name: "",
 		last_name: "",
 		email: "",
@@ -24,13 +25,13 @@ const UserCard = (props) => {
             setUser(data);
         }
         fetchUser().catch((err) => console.log(err));
-		console.log(user)
     }, []);
 
     return (
         <>
-            <Navbar></Navbar>
+        <Navbar />
             <div className={styles.content}>
+                <h1>{user.id}</h1>
                 <h1>{user.first_name + " " + user.last_name}</h1>
                 <p>Member since: {user.created_at}</p>
                 {/* <TableContainer>

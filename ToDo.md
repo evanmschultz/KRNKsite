@@ -10,9 +10,8 @@
 
 ### David
 
--   [ ] JWT Tokens
-    -   [ ] These go into the Python bits, David will work on that 9/15.
--   [ ] Edit paper data
+-   [x] JWT Tokens
+-   [x] Edit paper data
 -   [ ] Axios calls for data with relationships (i.e. get user with topics {interests})
 
 ## Backend
