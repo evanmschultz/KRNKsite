@@ -8,3 +8,12 @@
     border: 2px solid black;
     border-radius: 10px;
 }
+
+.title {
+    padding: 5px 40px;
+}
+
+.summary {
+    text-align: left;
+    padding: 10px 20px;
+}

@@ -15,17 +15,16 @@ const buttonStyle = {
     border: "1px solid black"
 }
 
-function InterestList() {
+const InterestList = (props) => {
+    const {id} = props
     const [interests, setInterests] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:8000/api/topics/')
+        axios.get('http://localhost:8000/api/user-interests/' + id)
             .then(res => {
                 setInterests(res.data)
             })
             .catch(err => console.log(err))
     }, [])
-
-    // TODO: Add axios request to get user's interests for Featured
 
     return (
         <div style={listStyle}>

@@ -44,10 +44,12 @@ const Featured = (props) => {
         <>
             {shuffledArticles.map((article, idx) => (
                 <div className={styles.container} key={idx}>
-                    <div className={styles.article}>{article.title}</div>
-                    <Link to={`/article/${article.id}`} style={{ color: "black" }}>
+                    <div className={styles.article}>
+                    <h3>{article.title}</h3>
+                    <Link to={`/article/${article.id}`} style={{ color: "black", flex: "2" }}>
                         Go to Article
                     </Link>
+                    </div>
                 </div>
             ))}
         </>

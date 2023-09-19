@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
 	Button,
 	Accordion,
@@ -9,8 +9,9 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styles from './Navbar.module.css';
+import AuthContext from '../Context/AuthContext';
 
-const digestStyle = {
+const buttonStyle = {
 	color: 'black',
 	backgroundColor: 'whitesmoke',
 	border: '1px solid black',
@@ -19,16 +20,18 @@ const digestStyle = {
 };
 
 const Navbar = (props) => {
-	// TODO: Must pass in the prop wherever necessary
-	const { userId } = props;
+	const { currentUser, setCurrentUser } = useContext(AuthContext);
 	const today = new Date().toLocaleDateString();
 	const logoutUser = async (e) => {
 		try {
 			const res = await axios.post(
-				'http://localhost:8000/users/logout',
+				'http://localhost:8000/api/logout',
 				{},
 				{ withCredentials: true }
 			);
+			setCurrentUser({
+				id: 0
+			})
 		} catch (err) {
 			console.log(err);
 		}
@@ -37,22 +40,23 @@ const Navbar = (props) => {
 		<>
 			<div className={styles.header}>
 				<div className={styles.info}>
+					{ !currentUser.id && <h3>"And that's the way it is"</h3>}
 					<p>Today: {today}</p>
-					<Button
+					{ currentUser.id && <Button
 						variant='outlined'
 						component={Link}
 						to={'/dashboard'}
-						style={digestStyle}
+						style={buttonStyle}
 					>
 						Daily Digest
-					</Button>
+					</Button> }
 				</div>
 				<div className={styles.title}>
 					<h1 style={{ fontSize: '2.5rem' }}>KRNKsite</h1>
 					<p style={{ fontStyle: 'italic' }}>with the news</p>
 				</div>
 				<div className={styles.menu}>
-					<Accordion style={{ border: '1px solid black' }}>
+					{ currentUser.id && <Accordion style={{ border: '1px solid black' }}>
 						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls='account-content'
@@ -66,7 +70,7 @@ const Navbar = (props) => {
 								</Button>
 							</div>
 							<div>
-								<Button component={Link} to={'/user/' + userId}>
+								<Button component={Link} to={'/user/' + currentUser.id}>
 									Settings
 								</Button>
 							</div>
@@ -80,7 +84,15 @@ const Navbar = (props) => {
 								</Button>
 							</div>
 						</AccordionDetails>
-					</Accordion>
+					</Accordion> }
+					{ !currentUser.id && <Button
+						variant='outlined'
+						component={Link}
+						to={'/'}
+						style={buttonStyle}
+					>
+						Return Home
+					</Button> }
 				</div>
 			</div>
 		</>

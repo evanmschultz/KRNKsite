@@ -56,13 +56,15 @@ def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) ->
         db.commit()
         db.refresh(db_user)
 
-        # Create a JWT token
-        access_token_expires = 60  # minutes
-        access_token = create_access_token(
-            data={"sub": db_user.email}, expires_delta=access_token_expires
-        )
+        # # Create a JWT token
+        # access_token_expires = 60  # minutes
+        # access_token = create_access_token(
+        #     data={"sub": db_user.email}, expires_delta=access_token_expires
+        # )
 
-        return {"user": db_user, "access_token": access_token, "token_type": "bearer"}
+        # return {"user": db_user, "access_token": access_token, "token_type": "bearer"}
+
+        return db_user
     
 
     except Exception as e:
@@ -81,11 +83,11 @@ def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> Use
     if not User.verify_password(user_data.password, db_user.password):
         raise HTTPException(status_code=400, detail="Incorrect email or password.")
 
-    # Create a JWT token
-    access_token_expires = 60  # minutes
-    access_token = create_access_token(
-        data={"sub": db_user.email}, expires_delta=access_token_expires
-    )
+    # # Create a JWT token
+    # access_token_expires = 60  # minutes
+    # access_token = create_access_token(
+    #     data={"sub": db_user.email}, expires_delta=access_token_expires
+    # )
 
     user_response = {
         "id": db_user.id,
@@ -95,8 +97,8 @@ def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> Use
         "is_premium_user": db_user.is_premium_user,
         "created_at": db_user.created_at,
         "updated_at": db_user.updated_at,
-        "access_token": access_token,
-        "token_type": "bearer",
+        # "access_token": access_token,
+        # "token_type": "bearer",
     }
 
     return user_response

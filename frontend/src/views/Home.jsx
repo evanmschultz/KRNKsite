@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import UserForm from '../components/UserForm/UserForm';
 import Featured from '../components/Featured/Featured';
 import styles from './Home.module.css';
+import AuthContext from '../components/Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Home = (props) => {
+    const {currentUser, setCurrentUser} = useContext(AuthContext);
     const [errors, setErrors] = useState({
         firstNameError: "",
         lastNameError: "",
@@ -27,6 +29,9 @@ const Home = (props) => {
                 userParam,
                 { withCredentials: true }
             );
+            setCurrentUser({
+                id: res.data.id
+            })
             setErrors({
                 firstNameError: "",
                 lastNameError: "",
@@ -68,7 +73,9 @@ const Home = (props) => {
             );
             if (res.status === 200) {
                 // Redirect to the dashboard or perform other actions
-                console.log("Logged in as: " + res.data.id)
+                setCurrentUser({
+                    id: res.data.id
+                })
                 navigate("/dashboard");
             } else {
                 // Handle other possible responses (e.g., incorrect email or password)

@@ -7,4 +7,25 @@
     margin: 20vh 25vw;
     border: 2px solid black;
     border-radius: 10px;
+    max-height: 75vh;
+    overflow-y: scroll;
+    min-width: 300px;
+}
+
+.topic {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px;
+}
+
+.topic > h3 {
+    flex: 1;
+}
+
+.buttonStyle {
+    color: black;
+    border: 1px solid black;
+    flex: 1;
 }

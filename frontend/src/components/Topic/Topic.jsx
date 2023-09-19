@@ -8,6 +8,7 @@ const Topic = (props) => {
     const {id} = useParams();
     const [papers, setPapers] = useState([]);
     useEffect(() => {
+        // TODO: change this axios call to be one that gets a topic AND the papers for a given topic
         axios.get('http://localhost:8000/api/papers/')
             .then(res => {
                 setPapers(res.data)
@@ -18,10 +19,11 @@ const Topic = (props) => {
         <>
             <Navbar></Navbar>
             <div className={styles.content}>
+                <h1>Articles on **Topic Name**</h1>
                 {papers.map((paper, idx) => {
                     return (
                         <div key={idx}>
-                            <p>{paper.pdf_url}</p>
+                            <h3>{paper.title}</h3>
                         </div>
                     )
                 })}
