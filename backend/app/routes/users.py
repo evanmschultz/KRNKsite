@@ -13,6 +13,7 @@ from app.models.topic import Topic
 from app.schemas.topic_schema import TopicResponseSchema
 
 from config.database import get_db
+from app.jwt_utils import create_access_token, decode_token
 
 import logging
 logger = logging.getLogger(__name__)
@@ -54,11 +55,20 @@ def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)) ->
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
-        return db_user
+
+        # Create a JWT token
+        access_token_expires = 60  # minutes
+        access_token = create_access_token(
+            data={"sub": db_user.email}, expires_delta=access_token_expires
+        )
+
+        return {"user": db_user, "access_token": access_token, "token_type": "bearer"}
+    
 
     except Exception as e:
         logger.error("Error registering user: %s", str(e))
         raise
+
 
 
 
@@ -71,22 +81,25 @@ def login_user(user_data: UserLoginSchema, db: Session = Depends(get_db)) -> Use
     if not User.verify_password(user_data.password, db_user.password):
         raise HTTPException(status_code=400, detail="Incorrect email or password.")
 
-    return db_user
+    # Create a JWT token
+    access_token_expires = 60  # minutes
+    access_token = create_access_token(
+        data={"sub": db_user.email}, expires_delta=access_token_expires
+    )
 
-# @router.post("/user/add-topic/{topic_id}/") <--- This needs to be updated once authentication is implemented.
-# def add_topic_to_user(
-#     topic_id: int,
-#     db: Session = Depends(get_db),
-#     current_user: User = Depends(get_current_user),  # Use your authentication method
-# ):
-#     topic = db.query(Topic).filter(Topic.id == topic_id).first()
-#     if not topic:
-#         raise HTTPException(status_code=404, detail="Topic not found")
+    user_response = {
+        "id": db_user.id,
+        "first_name": db_user.first_name,
+        "last_name": db_user.last_name,
+        "email": db_user.email,
+        "is_premium_user": db_user.is_premium_user,
+        "created_at": db_user.created_at,
+        "updated_at": db_user.updated_at,
+        "access_token": access_token,
+        "token_type": "bearer",
+    }
 
-#     current_user.topics.append(topic)
-#     db.commit()
-
-#     return {"message": "Topic added to user's interests"}
+    return user_response
 
 @router.get("/user/{user_id}", response_model=UserResponseSchema)
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)) -> User:

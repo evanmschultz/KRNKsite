@@ -2,7 +2,6 @@ from datetime import datetime
 import re
 from pydantic import BaseModel, validator, EmailStr, ValidationError, Field
 
-
 class SummaryBase(BaseModel):
     short_content: str
     long_content: str

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
 	Button,
 	Accordion,
@@ -66,7 +66,7 @@ const Navbar = (props) => {
 								</Button>
 							</div>
 							<div>
-								<Button component={Link} to={'/edit/' + userId}>
+								<Button component={Link} to={'/user/' + userId}>
 									Settings
 								</Button>
 							</div>

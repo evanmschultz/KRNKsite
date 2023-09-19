@@ -1,9 +1,21 @@
-import React from 'react'
+import React from 'react';
+import { useAuth } from '../components/Context/AuthContext';
+import Navbar from '../components/Navbar/Navbar';
 
 const InterestCard = (props) => {
-    return (
-        <div>InterestCard</div>
-    )
-}
+    const { user } = useAuth(); // Access user data from the context
 
-export default InterestCard
+    // Use the user data for your API call
+    // ...
+
+    return (
+        <>
+        <Navbar />
+        <div>
+            <p>Hi</p>
+        </div>
+        </>
+    );
+};
+
+export default InterestCard;

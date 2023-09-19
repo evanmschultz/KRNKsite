@@ -68,12 +68,14 @@ from app.routes.users import router as user_router
 from app.routes.topics import router as topic_router
 from app.routes.papers import router as paper_router
 from app.routes.summaries import router as summary_router
+from app.routes.associations import router as association_router
 
 # Include the routers in the app
 app.include_router(user_router, prefix="/api", tags=["users"])
 app.include_router(topic_router, prefix="/api", tags=["topics"])
 app.include_router(paper_router, prefix="/api", tags=["papers"])
 app.include_router(summary_router, prefix="/api", tags=["summaries"])
+app.include_router(association_router, prefix="/api", tags=["associations"])
 
 
 # CORS Middleware settings
