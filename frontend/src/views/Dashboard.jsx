@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 
 const Dashboard = () => {
-
+    const id = 1;
     return (
         <>
             <Navbar userId={1}></Navbar>

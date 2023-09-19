@@ -5,6 +5,7 @@
 ### Kyle
 -   [ ] Set up useContext for user tracking (persist across refresh if time)
 -   [ ] FE styling of received information
+-   [ ] Make FE responsive
 
 
 ### David
