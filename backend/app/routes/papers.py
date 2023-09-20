@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.models.paper import Paper
+from app.models.topic import Topic
 from typing import List
 
 from app.schemas.paper_schema import PaperCreate, PaperRead, PaperUpdate, PaperDelete
@@ -70,7 +71,21 @@ def get_all_papers(db: Session = Depends(get_db)) -> List[dict]:
     return papers
 
 
-@router.put("/paper/update/{paper_id}/", response_model=PaperUpdate)
+@router.get("/papers-by-topic/{topic_id}", response_model=List[PaperRead])
+def get_papers_by_topic(topic_id: int, db: Session = Depends(get_db)) -> List[dict]:
+    """
+    Get all papers by topic. -Read
+    
+    Args:
+        db (Session, optional): The database session. Defaults to `get_db()` dependency.
+        
+        Returns:
+            dict: A dictionary containing the retrieved paper objects."""
+    papers = db.query(Paper).filter(Paper.topic_id == topic_id).all()
+    return papers
+
+
+@router.patch("/paper/update/{paper_id}/", response_model=PaperUpdate)
 def update_paper(
     paper_id: int, paper_data: PaperUpdate, db: Session = Depends(get_db)
 ) -> dict:
@@ -123,4 +138,3 @@ def delete_paper(paper_id: int, db: Session = Depends(get_db)) -> dict:
             db.delete(paper)
             db.commit()
             return {"detail": "Paper deleted"}
-

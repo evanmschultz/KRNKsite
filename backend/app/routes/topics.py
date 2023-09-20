@@ -74,7 +74,7 @@ def get_topic(topic_id: int, db: Session = Depends(get_db)) -> dict:
 
 
 
-@router.put("/topic/update/{topic_id}/", response_model=TopicResponseSchema)
+@router.patch("/topic/update/{topic_id}/", response_model=TopicResponseSchema)
 def update_topic(
         
         topic_id: int, topic_data: TopicCreateSchema, db: Session = Depends(get_db)

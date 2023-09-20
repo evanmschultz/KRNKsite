@@ -79,7 +79,7 @@ def create_summary(
 # PUT ROUTES
 #--------------------------------------------------------
 
-@router.put("/summary/update/{summary_id}/", response_model=SummaryCreateSchema)
+@router.patch("/summary/update/{summary_id}/", response_model=SummaryCreateSchema)
 def update_summary(
     summary_id: int, summary_data: SummaryCreateSchema, db: Session = Depends(get_db)
 ) -> dict:

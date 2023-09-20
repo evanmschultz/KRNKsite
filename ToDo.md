@@ -14,14 +14,14 @@
 
 
 ### David
--   [ ] Update UserCard.jsx to allow for editing/updating non-interest info functionality
+-   [ x ] Update UserCard.jsx to allow for editing/updating non-interest info functionality
     - Fields:
-        - [ ] Email
-        - [ ] Password
+        - [ x ] Email
+        - [ x ] Password
 
 ## Backend
 
 ### David
--   [ ] Change "put" routes to "patch" routes for updating information
--   [ ] Add axios route to get a topic AND the papers associated with it by topic id
--   [ ] Fix logout route (currently getting 500 error)
+-   [ x ] Change "put" routes to "patch" routes for updating information
+-   [ x ] Add axios route to get a topic AND the papers associated with it by topic id
+-   [ x ] Fix logout route (currently getting 500 error)
