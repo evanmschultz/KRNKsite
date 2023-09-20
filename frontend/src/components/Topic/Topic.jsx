@@ -5,27 +5,38 @@ import { useParams } from "react-router-dom";
 import styles from "./Topic.module.css";
 
 const Topic = (props) => {
-    const {id} = useParams();
+    const { id } = useParams();
     const [papers, setPapers] = useState([]);
+    const [topic, setTopic] = useState({ name: "" }); // Initialize with an empty name
+
     useEffect(() => {
-        // TODO: change this axios call to be one that gets a topic AND the papers for a given topic
-        axios.get('http://localhost:8000/api/papers/')
-            .then(res => {
-                setPapers(res.data)
+        // Fetch the topic's name
+        axios.get(`http://localhost:8000/api/topic/${id}`/*, { withCredentials: true }*/)
+            .then((res) => {
+                setTopic({ name: res.data.name });
             })
-            .catch(err => console.log(err))
-    }, [])
+            .catch((err) => console.log(err));
+
+        // Fetch papers for the topic
+        axios.get(`http://localhost:8000/api/papers-by-topic/${id}`)
+            .then((res) => {
+                setPapers(res.data);
+            })
+            .catch((err) => console.log(err));
+    }, []);
+
     return (
         <>
-            <Navbar></Navbar>
+            <Navbar />
             <div className={styles.content}>
-                <h1>Articles on **Topic Name**</h1>
+                <h1>Articles on {topic.name}</h1>
                 {papers.map((paper, idx) => {
                     return (
                         <div key={idx}>
                             <h3>{paper.title}</h3>
+                            <a href = {paper.pdf_url}>See the Paper!</a>
                         </div>
-                    )
+                    );
                 })}
             </div>
         </>
